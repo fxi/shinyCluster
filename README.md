@@ -1,13 +1,15 @@
 # shinyNodeProxy
 
 
-`shinyNodeProxy` is a simple node js app to launch R shiny app with the help of a proxy. This should facilitate serving a shiny app with a node js process manager like Phusion Passenger.
+`shinyNodeProxy` is a simple Node.js server to launch a single R shiny application or interactive document, through a proxy. Using `shinyNodeProxy` with a process manager (e.g. Phusion Passenger) can provide some advantages over the open source version of shiny-server :
 
-Shiny-server serve shiny app very nicely, but the open source version does not allow ssl connection and R process is limited to one by application.
+* Load balancing
+* Multiple R processes
+* SSL connexion
+* HTTP caching
 
-Phusion Passenger can be used to handle ssl connecion, manage load balancing on multiple CPU, use HTTP cache and a lot more. 
 
-This is an experimental project, please feed back if you find this module useful.
+This is an experimental project, please send a feed back if you think that this module is useful.
 
 
 # Usage 
@@ -21,8 +23,7 @@ This is an experimental project, please feed back if you find this module useful
 * R package shiny
 
 
-## Install from git repo
-
+## Install from git repository
 
 ```{sh}
 cd ~/yourProjectFolder/
@@ -34,19 +35,21 @@ npm install
 ## Configuration
 
 * Your R shiny app goes in `appShiny` folder
-* SSL certificate could be put in `/settings/ssl`
+* SSL certificate could be put in `/settings/ssl`. Path can be changed in `passengerStartApp*` 
 * `passengerStartApp.sh` and `passengerStartAppSsl.sh` contain the command and configuration for starting the app with passenger.
 
 
 ## Testing
 
+You can test your R shiny application without launching a process manager: using R directly or `shinyNodeProxy` only.
+
 ### R only
 
-To manually start the application, from the root of the project (expected working dir), lauch utils/runApp.R with the port to listen:
+To manually start the shiny application, launch utils/runApp.R with the port to listen from the root of this project (expected working dir) with this command:
 
 `Rscript utils/runApp.R 3838`
 
-### node only
+### Node.js only
 
 To start the application with node, use `node` (or `nodejs`) command. This will launch the port detection and the proxy.
 
@@ -56,10 +59,10 @@ To start the application with node, use `node` (or `nodejs`) command. This will 
 
 ```{sh}
 .
-├── README.md
-├── app.js # main application 
+├── README.md # This file
+├── app.js # Main application 
 ├── appShiny
-│   └── app.R # R shiny application to serve
+│   └── app.R # The R shiny application 
 ├── log
 │   ├── passenger.3000.log # passenger log (file path is defined in startup script)
 ├── node_modules # node dependencies
