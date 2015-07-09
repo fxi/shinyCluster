@@ -1,5 +1,7 @@
 # lauch app using given port
-library(shiny)
+setwd('appShiny')
+if(dir.exists('packrat'))source('packrat/init.R')
 args <- commandArgs(TRUE)
 port <- as.integer(args[1])
-runApp('appShiny/',port=port,launch.browser=FALSE)
+shiny::runApp('.',port=port,launch.browser=FALSE)
+
