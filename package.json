@@ -1,5 +1,5 @@
 {
-  "name": "shinyNodeProxy",
+  "name": "shinynodeproxy",
   "version": "0.0.1",
   "description": "Quick R shiny server for single app using phusion passenger.",
   "main": "app.js",

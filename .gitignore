@@ -1,7 +1,6 @@
 # Logs
 logs
 *.log
-log/*
 
 # ssl
 *.crt
@@ -12,9 +11,10 @@ log/*
 pids
 *.pid
 *.seed
-
-# node modules
+*.lock
+# node / npm
 node_modules
+npm-debug.log
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release

@@ -8,13 +8,15 @@ var http = require('http'),
     httpProxy = require('http-proxy');
 
 
-var  setProxyWebSocket = function(port,host,listen){
   //
   // SERVER PROXY
   // 
 
   // Setup our server to proxy standard HTTP requests 
 
+
+
+var  setProxyWebSocket = function(port,host,listen){
   var proxy = new httpProxy.createProxyServer({
     target: {
       host: 'localhost',
