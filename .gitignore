@@ -1,0 +1,23 @@
+# Logs
+logs
+*.log
+log/*
+
+# ssl
+*.crt
+*.key
+*.csr
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# node modules
+node_modules
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+build/Release
+
+# mac files
+.DS_Store

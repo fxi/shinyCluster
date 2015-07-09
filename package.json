@@ -1,0 +1,36 @@
+{
+  "name": "shinyNodeProxy",
+  "version": "0.0.1",
+  "description": "Quick R shiny server for single app using phusion passenger.",
+  "main": "app.js",
+  "dependencies": {
+    "fs": "^0.0.2",
+    "http": "0.0.0",
+    "http-proxy": "^1.11.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fxi/shinyNodeProxy.git"
+  },
+  "keywords": [
+    "R",
+    "shiny",
+    "app",
+    "server",
+    "ssl",
+    "https",
+    "proxy",
+    "load",
+    "balancing"
+  ],
+  "author": "F.Moser",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fxi/shinyNodeProxy/issues"
+  },
+  "homepage": "https://github.com/fxi/shinyNodeProxy"
+}
