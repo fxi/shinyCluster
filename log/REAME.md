@@ -1,1 +1,1 @@
-This folder contain log from passenger.
+This folder contains log from passenger.
