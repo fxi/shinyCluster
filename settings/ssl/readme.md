@@ -1,16 +1,12 @@
 SSL
 ###
 
+To create self-signed certificate :
 
-When running with passenger, we can set up a https server. 
-
-This folder contains ssl certificate. Please verify that gitignore is set to ignore .csr .key and .crt files. 
-
-Generate ssl auto signed certificate and key:
 ```{sh}
-openssl genrsa -des3 -out server.key 1024
-openssl req -new -key server.key -out server.csr
-openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
-```
 
+openssl req -x509 -newkey rsa:2048 -keyout key.pem -out key-cert.pem
+openssl rsa -in key.pem -out newkey.pem && mv newkey.pem key.pem
+
+```
 

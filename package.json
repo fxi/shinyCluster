@@ -1,11 +1,9 @@
 {
   "name": "shinynodeproxy",
   "version": "0.0.1",
-  "description": "Quick R shiny server for single app using phusion passenger.",
+  "description": "R shiny server for single app using phusion passenger for clustering or/and ssl.",
   "main": "app.js",
   "dependencies": {
-    "fs": "^0.0.2",
-    "http": "0.0.0",
     "http-proxy": "^1.11.1"
   },
   "devDependencies": {},
@@ -22,7 +20,6 @@
     "app",
     "server",
     "ssl",
-    "https",
     "proxy",
     "load",
     "balancing"

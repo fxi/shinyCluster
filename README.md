@@ -1,7 +1,7 @@
 # shinyNodeProxy
 
 
-`shinyNodeProxy` is a simple Node.js server to launch a single R shiny application or interactive document, through a proxy. Using `shinyNodeProxy` with a process manager (e.g. Phusion Passenger) can provide some advantages over the open source version of shiny-server :
+`shinyNodeProxy` is a minimal Node.js script to launch a single R shiny application or interactive document, through a proxy. Using `shinyNodeProxy` with a process manager (e.g. Phusion Passenger) can provide some advantages over the open source version of shiny-server :
 
 * Load balancing
 * Multiple R processes
@@ -9,35 +9,38 @@
 * HTTP caching
 
 
-This is an experimental project, please send a feed back if you think that this module is useful.
+This is an experimental project, please send a feedback if you think that this module is useful.
 
 
 # Usage 
 
 ## Prerequisite
 
-* unix-like OS
-* nodejs + npm
-* phusion passenger
-* R
-* R package shiny
+* [unix-like OS](https://en.wikipedia.org/wiki/Unix-like)
+* [nodejs + npm](https://nodejs.org/download/)
+* [R](http://www.r-project.org/)
+* [R package shiny](https://cran.r-project.org/web/packages/shiny/index.html)
+* [phusion passenger (optional)](https://www.phusionpassenger.com/download#open_source)
 
 
-## Install from git repository
+## Installation and quick run
 
 ```{sh}
 cd ~/yourProjectFolder/
 git clone https://github.com/fxi/shinyNodeProxy.git
 cd shinyNodeProxy
 npm install 
+start.sh
 ```
 
 ## Configuration
 
-* Your R shiny app goes in `appShiny` folder
-* SSL certificate could be put in `/settings/ssl`. Path can be changed in `passengerStartApp*` 
-* `passengerStartApp.sh` and `passengerStartAppSsl.sh` contain the command and configuration for starting the app with passenger.
+* Set the path to your R shiny application in `settings/settings.js`
 
+For launching the app in a cluster  with `passenger`, the shell scripts `stop.sh`, `start.sh` and `startSSL.sh` could be use as shortcut and should be configured accordingly to your system.
+
+* SSL certificate could be put in `settings/ssl`. Path can be changed in `startSSL.sh`. 
+* Cookie name, number of instance, http port, https port, and a lot more should also be configured in those `start*.sh` shell scripts.
 
 ## Testing
 
@@ -45,9 +48,9 @@ You can test your R shiny application without launching a process manager: using
 
 ### R only
 
-To manually start the shiny application, launch utils/runApp.R with the port to listen from the root of this project (expected working dir) with this command:
+To manually start the shiny application, launch `utils/runApp.R` from the root of this project, with the port to listen and the path to your app:
 
-`Rscript utils/runApp.R 3838`
+`Rscript utils/runApp.R 3838 inst/example`
 
 ### Node.js only
 
@@ -55,31 +58,30 @@ To start the application with node, use `node` (or `nodejs`) command. This will 
 
 `node app.js`
 
-# Structure
+# Structure of a working dir.
 
 ```{sh}
+
 .
-├── README.md # This file
-├── app.js # Main application 
-├── appShiny
-│   └── app.R # The R shiny application 
-├── log
-│   ├── passenger.3000.log # passenger log (file path is defined in startup script)
-├── node_modules # node dependencies
-│   ├── fs
-│   ├── http
-│   └── http-proxy
-├── package.json # package description
-├── passengerStartApp.sh # simple reminder for starting and configure the app with passenger
-├── passengerStartAppSsl.sh # same, with ssl support
-├── passengerStopApp.sh # stop the application using given PID file (by default, in log folder)
-├── public # passenger public folder. Not used yet
-├── settings # settings. Empty, but could contain ssl config. Don't share this.
-│   └── ssl
-└── utils # Helper function
-    ├── findNextOpenPort.sh  # Find the next port open to initiate shiny app
-    ├── runApp.R # command to lauch R shiny app with given port
-    └── testIfPortIsReady.sh # check if the port is ready to listen. Used in loop written in app.js
+|-- README.md
+|-- app.js # main application
+|-- inst # Example of a simple  shiny app 
+|   `-- example
+|-- log # contains logs
+|   |-- REAME.md
+|-- node_modules # node modules
+|   `-- http-proxy
+|-- package.json # app dependencies
+|-- public 
+|-- settings # settings of the application: path to R shiny app, default port.
+|   |-- settings.js
+|   |-- settings.js.example
+|   `-- ssl # Contains ssl certificate (optional)
+|-- start.sh # Shortcut to launch the app whith passenger
+|-- startSSL.sh # Launch with ssl (modify path to SSL files, or create one )
+|-- stop.sh # Stop passenger.
+`-- utils
+    `-- runApp.R # Lauch R shiny app
 ```
 
 # Contribution

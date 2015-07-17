@@ -6,6 +6,7 @@ logs
 *.crt
 *.key
 *.csr
+*.pem
 
 # Runtime data
 pids
@@ -21,3 +22,9 @@ build/Release
 
 # mac files
 .DS_Store
+
+# archives
+archives
+
+# settings
+settings.js
