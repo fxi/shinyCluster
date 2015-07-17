@@ -77,8 +77,8 @@ To start the application with node, use `node` (or `nodejs`) command. This will 
 |   |-- settings.js
 |   |-- settings.js.example
 |   `-- ssl # Contains ssl certificate (optional)
-|-- start.sh # Shortcut to launch the app whith passenger
-|-- startSSL.sh # Launch with ssl (modify path to SSL files, or create one )
+|-- start.sh # Shortcut to launch the app whith passenger ( Edit this file to change passenger settings )
+|-- startSSL.sh # Launch with ssl ( Edit this file to change passenger and ssl settings )
 |-- stop.sh # Stop passenger.
 `-- utils
     `-- runApp.R # Lauch R shiny app
