@@ -127,7 +127,7 @@ var  setProxyWebSocket = function(port,host){
     console.log('Client disconnected');
   });
  
-proxyServer.listen(portOut);
+proxyServer.listen(portOut,hostOut);
 
 };
 
