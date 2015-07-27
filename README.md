@@ -1,9 +1,9 @@
 # shinyNodeProxy
 
 
-`shinyNodeProxy` is a simple Node.js script for launching a single R shiny application or interactive document within a Node.js process manager: [Phusion passenger](https://www.phusionpassenger.com). Using `shinyNodeProxy` with Phusion Passenger should keep your shiny app alive and  help to solve some shiny-server limitation, shuch as load balancing (html request), SSL connexion or session monitoring. In this project, we use simple shortcut (start.sh, startSSL.sh and stop.sh) to configure and start the application through Phusion passenger. 
+`shinyNodeProxy` is a simple Node.js script for launching a single R shiny application or interactive document within a Node.js process manager: [Phusion passenger](https://www.phusionpassenger.com). Using `shinyNodeProxy` with Phusion Passenger should keep alive your shiny app and  help to solve some shiny-server limitation, shuch as load balancing on multiple R processes, SSL connexion or session monitoring. In this project, we use simple shortcut (start.sh, startSSL.sh and stop.sh) to configure and start the application through Phusion passenger. 
 
-This is an experimental project. Please send me a feedback if you think that this module is useful.
+This is an experimental project. Please send me a feedback if you find this script useful.
 
 For production, please use the official shiny-server or [shiny-server pro](https://www.rstudio.com/products/shiny-server-pro/).
 
@@ -22,7 +22,7 @@ Alternative approaches:
 * [nodejs + npm](https://nodejs.org/download/)
 * [R](http://www.r-project.org/)
 * [R package shiny](https://cran.r-project.org/web/packages/shiny/index.html)
-* [phusion passenger (optional)](https://www.phusionpassenger.com/download#open_source)
+* [phusion passenger](https://www.phusionpassenger.com/download#open_source)
 
 
 ## Installation and quick run

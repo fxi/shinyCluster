@@ -1,8 +1,9 @@
 #! /bin/bash
 
- passenger start \
+#--startup-file app.js \
+
+  passenger start \
    --daemonize \
-   --startup-file app.js \
    --app-type node \
    --log-file log/passenger.log \
    --pid-file log/passenger.pid \
