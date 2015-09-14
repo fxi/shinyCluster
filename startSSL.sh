@@ -1,21 +1,31 @@
 #! /bin/bash
 
-#--startup-file app.js \
+port=$1
+portSSL=$2
 
-  passenger start \
-   --daemonize \
-   --app-type node \
-   --log-file log/passenger.log \
-   --pid-file log/passenger.pid \
-   --port 3006 \
-   --ssl \
-   --ssl-port 3007 \
-   --sticky-sessions \
-   --sticky-sessions-cookie-name shinyNodeProxy \
-   --ssl-certificate settings/ssl/key-cert.pem \
-   --ssl-certificate-key settings/ssl/key.pem \
-   --max-pool-size 10 \
-   --min-instances 10
+if [[ -z $1 ]]
+then port=3006
+fi
+
+if [[ -z $1 ]]
+then port=3007
+fi
+
+
+passenger start \
+  --daemonize \
+  --app-type node \
+  --log-file log/passenger.log \
+  --pid-file log/passenger.pid \
+  --port $port \
+  --ssl \
+  --ssl-port $portSSL \
+  --sticky-sessions \
+  --sticky-sessions-cookie-name shinyNodeProxy \
+  --ssl-certificate settings/ssl/key-cert.pem \
+  --ssl-certificate-key settings/ssl/key.pem \
+  --max-pool-size 10 \
+  --min-instances 10
 
 
 
