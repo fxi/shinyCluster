@@ -114,7 +114,7 @@ var  setProxyWebSocket = function(port,host){
     res.writeHead(500, {
       'Content-Type': 'text/plain'
     });
-    res.end('Something went wrong in the proxy.'+err);
+    res.end('Proxy error. Plase try again in a moment. Error='+err);
     throw err;
   });
 
