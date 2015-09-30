@@ -5,6 +5,10 @@ args <- commandArgs(TRUE)
 appWd = file.path(args[2])
 port <- as.integer(args[1])
 
+
+Sys.setlocale("LC_ALL", 'en_US.UTF-8')
+
+print(sessionInfo())
 message(paste('Set working directory to',appWd))
 setwd(file.path(args[2]))
 

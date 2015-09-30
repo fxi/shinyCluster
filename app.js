@@ -105,6 +105,7 @@ var  setProxyWebSocket = function(port,host){
    });
   */
   var proxyServer = http.createServer(function (req, res) {
+    res.setHeader("Content-Type", "charset=utf-8");
     proxy.web(req, res);
   });
 
@@ -113,7 +114,7 @@ var  setProxyWebSocket = function(port,host){
     res.writeHead(500, {
       'Content-Type': 'text/plain'
     });
-    res.end('Something went wrong in the proxy.');
+    res.end('Something went wrong in the proxy.'+err);
     throw err;
   });
 
