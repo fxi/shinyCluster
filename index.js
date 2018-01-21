@@ -22,7 +22,7 @@ function app(callback) {
     .then(function(port){
       
       var child = require('child_process')
-        .spawn('Rscript', ['./utils/runApp.R', port, config.path ]);
+        .spawn('Rscript', [path.resolve('./utils/runApp.R'), port, config.path ]);
 
       /* pipe msgs */
       child.stdout.pipe(process.stdout);

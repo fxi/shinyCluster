@@ -23,7 +23,7 @@ This is an experimental project. Please send me a feedback if you find this scri
 ## Install
 
 ```{sh}
-npm install shiny-cluster --save
+npm install @fxi/shiny-cluster --save
 ```
 
 ## Example
@@ -37,7 +37,7 @@ node example.js
 Sample app in a js script
 
 ```{js}
-var shinyCluster= require('shiny-cluster');
+var shinyCluster= require('@fxi/shiny-cluster');
 
 /**
  * Launch a simple shiny app
@@ -46,7 +46,7 @@ var shinyCluster= require('shiny-cluster');
  * listen on port 3456
  */
 shinyCluster.run({
-  path : './utils/',
+  path : 'node_module/@fxi/shiny-cluster/utils/',
   concurency : 3,
   port : 3456
 });
@@ -57,6 +57,9 @@ shinyCluster.run({
 yes please !
 
 # Change logs
+
+0.0.2 -> 0.0.3
+ - paths issues
 
 0.0.1 -> 0.0.2 
  - build a node module
