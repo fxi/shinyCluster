@@ -2,12 +2,6 @@
 logs
 *.log
 
-# ssl
-*.crt
-*.key
-*.csr
-*.pem
-
 # Runtime data
 pids
 *.pid
@@ -23,8 +17,4 @@ build/Release
 # mac files
 .DS_Store
 
-# archives
-archives
 
-# settings
-settings.js

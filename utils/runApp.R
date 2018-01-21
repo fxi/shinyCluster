@@ -2,20 +2,16 @@
 
 args <- commandArgs(TRUE)
 
-appWd = file.path(args[2])
+path <- file.path(args[2])
 port <- as.integer(args[1])
-
-
 Sys.setlocale("LC_ALL", 'en_US.UTF-8')
 
-print(sessionInfo())
-message(paste('Set working directory to',appWd))
-setwd(file.path(args[2]))
+setwd(path)
 
-if(dir.exists('packrat')){
-  message('Packrat found. Initialisation.') 
-  source('packrat/init.R')
-}
+shiny::runApp(  
+  port = port,
+  launch.browser = FALSE,
+  host = "0.0.0.0"
+  )
 
-shiny::runApp('.',port=port,launch.browser=FALSE)
-
+return(TRUE)
