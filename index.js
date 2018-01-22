@@ -4,30 +4,36 @@ var http = require('http');
 var path = require('path');
 var httpProxy = require('http-proxy');
 var config = {
-  path : "./utils/",
+  path : path.join(__dirname,"./example"),
   port : 3333
 };
 
 module.exports.run = function(options){
   config = Object.assign({}, config, options);
   config.path = path.resolve(config.path);
+  /* display listening port */
+  process.stdout.write("shiny-cluster listening to port " + config.port +  '\n');
   stickyCluster(app, config);
 };
 
 /**
-* Main app for sticky cluster
-*/
+ * Main app for sticky cluster
+ */
 function app(callback) {
+
+  var child, pathRunApp, port;
+
   getPort()
-    .then(function(port){
-      
-      var child = require('child_process')
-        .spawn('Rscript', [path.resolve('./utils/runApp.R'), port, config.path ]);
+    .then(function(p){
+      /**
+       * Init R process
+       */
+      port = p;
+      pathRunApp = path.join(__dirname,'utils/runApp.R');
+      child = require('child_process')
+        .spawn('Rscript', [pathRunApp, port, config.path ]);
 
-      /* pipe msgs */
-      child.stdout.pipe(process.stdout);
-      child.stderr.pipe(process.stderr);
-
+      /* handle event */
       child.on('exit', function() {
         process.exit();
       });
@@ -35,6 +41,35 @@ function app(callback) {
       process.on('exit',function(){
         child.kill();
       });
+
+      return Promise.resolve(true);
+    }).then(function(){
+      /**
+       * Test for connection
+       */
+      var test = "Listening on http://0.0.0.0:" + port;
+
+      return new Promise(function(resolve,reject){
+        child.stderr.on('data',function(msg){
+          msg = msg.toString();
+          if( msg.indexOf(test) > -1){
+            resolve(msg);
+          }
+        });
+      }); 
+
+    })
+    .then(function(msg){
+
+      console.log(msg);
+
+      /**
+       * Launch proxy
+       */
+
+      /* pipe msgs */
+      child.stdout.pipe(process.stdout);
+      child.stderr.pipe(process.stderr);
 
       var proxy = new httpProxy.createProxyServer({
         target: {
@@ -68,8 +103,10 @@ function app(callback) {
       });
 
       callback(proxyServer);
-
     });
+
+
+
 
 }
 

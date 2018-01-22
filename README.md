@@ -28,38 +28,51 @@ npm install @fxi/shiny-cluster --save
 
 ## Example
 
-Sample app 
-
-```{sh}
-node example.js
-```
-
-Sample app in a js script
+### Launch the default app
 
 ```{js}
 var shinyCluster= require('@fxi/shiny-cluster');
 
 /**
- * Launch a simple shiny app
- * located in folder `./utils`,
+ * Launch a simple shiny app ( located in `./example` ),
  * using 3 workers and
  * listen on port 3456
  */
 shinyCluster.run({
-  path : 'node_module/@fxi/shiny-cluster/utils/',
   concurency : 3,
   port : 3456
 });
 
 ```
+
+### Launch your app
+
+```{js}
+var shinyCluster= require('@fxi/shiny-cluster');
+
+/**
+ * Launch your shiny app
+ * located here `/home/john/myShinyApp/app.R`,
+ * using 10 workers and
+ * listen on port 3434
+ */
+shinyCluster.run({
+  path : '/home/john/myShinyApp' ,
+  concurency : 10,
+  port : 3434
+});
+
+```
+
 ## Contribution
 
 yes please !
 
 # Change logs
 
-0.0.2 -> 0.0.3
+0.0.2 -> 0.0.5
  - paths issues
+ - better example
 
 0.0.1 -> 0.0.2 
  - build a node module

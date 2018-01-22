@@ -5,6 +5,6 @@ var shinyCluster = require('.');
 */
 shinyCluster.run({
   port : 3456,
-  concurency : 3
+  concurency : 1
 });
 
