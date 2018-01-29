@@ -1,10 +1,11 @@
-var shinyCluster = require('.');
+var shinyCluster = require('../.');
 
 /**
 * Launch some instances of the app in utils/app.R
 */
 shinyCluster.run({
+  path : './appr.R',
   port : 3456,
-  concurency : 1
+  concurrency: 1
 });
 
