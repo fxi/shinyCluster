@@ -39,6 +39,7 @@ var shinyCluster= require('@fxi/shiny-cluster');
  * listen on port 3456
  */
 shinyCluster.run({
+  path : "./example/app.R" // path to directory of shiny app or app.R file
   concurency : 3,
   port : 3456
 });
@@ -70,11 +71,18 @@ yes please !
 
 # Change logs
 
+0.0.5 -> 0.0.6
+ 
+ - wait on shiny port to be available using net.connect
+ - better error handling
+
 0.0.2 -> 0.0.5
+
  - paths issues
  - better example
 
 0.0.1 -> 0.0.2 
+
  - build a node module
  - use sticky-cluster
  - simplify everything
