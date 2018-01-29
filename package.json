@@ -1,6 +1,6 @@
 {
   "name": "@fxi/shiny-cluster",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Launch a Shiny app in multiple workers using node js",
   "main": "index.js",
   "dependencies": {
