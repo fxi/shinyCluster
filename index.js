@@ -11,8 +11,6 @@ var config = {
 module.exports.run = function(options){
   config = Object.assign({}, config, options);
   config.path = path.resolve(config.path);
-  /* display listening port */
-  process.stdout.write("shiny-cluster listening to port " + config.port +  '\n');
   stickyCluster(app, config);
 };
 
@@ -21,56 +19,52 @@ module.exports.run = function(options){
  */
 function app(callback) {
 
-  var child, pathRunApp, port;
+  var r, pathRunApp, port ;
 
   getPort()
     .then(function(p){
-      /**
-       * Init R process
-       */
-      port = p;
-      pathRunApp = path.join(__dirname,'utils/runApp.R');
-      child = require('child_process')
-        .spawn('Rscript', [pathRunApp, port, config.path ]);
 
-      /* handle event */
-      child.on('exit', function() {
-        process.exit();
-      });
+        console.log("Launching R from" +config.path);
+        /**
+         * Init R process
+         */
+        port = p;
+        pathRunApp = path.join(__dirname,'utils/runApp.R');
+        r = require('child_process')
+          .spawn('Rscript', [pathRunApp, port, config.path ]);
 
-      process.on('exit',function(){
-        child.kill();
-      });
 
-      return Promise.resolve(true);
-    }).then(function(){
-      /**
-       * Test for connection
-       */
-      var test = "Listening on http://0.0.0.0:" + port;
+        /* pipe msgs */
+        console.log("Pipe stdout/err");
+        r.stdout.pipe(process.stdout);
+        r.stderr.pipe(process.stderr);
 
-      return new Promise(function(resolve,reject){
-        child.stderr.on('data',function(msg){
-          msg = msg.toString();
-          if( msg.indexOf(test) > -1){
-            resolve(msg);
-          }
+        /* handle event */
+        r.on('close', function(code) {
+          console.log("Spawn closed with code " + code);
+          process.exit();
         });
-      }); 
 
+        process.on('close',function(code){
+          console.log("Process closed with code " + code);
+          r.kill();
+        });
+
+
+      return port;
+    }).then(function(port){
+        /**
+         * Test for connection
+         */
+        console.log("Wait on port " + port);
+        return waitPort(port,"0.0.0.0");
     })
-    .then(function(msg){
+    .then(function(port){
 
-      console.log(msg);
 
       /**
        * Launch proxy
        */
-
-      /* pipe msgs */
-      child.stdout.pipe(process.stdout);
-      child.stderr.pipe(process.stderr);
-
       var proxy = new httpProxy.createProxyServer({
         target: {
           host: 'localhost',
@@ -103,10 +97,10 @@ function app(callback) {
       });
 
       callback(proxyServer);
+    }).catch(function(err){
+
+      console.log(err);
     });
-
-
-
 
 }
 
@@ -115,7 +109,7 @@ var getPort = module.exports.getPort = function(){
   return new Promise(function(resolve, reject){
     var server = net.createServer();
     server.unref();
-    server.on('error', reject);
+    server.on('error', function(){reject("Failed to get port");});
     server.listen({port:0},function(){
       var port = server.address().port;
       server.close(function(){
@@ -125,3 +119,39 @@ var getPort = module.exports.getPort = function(){
   });
 };
 
+var waitPort = module.exports.waitPort = function(port,host){
+  return new Promise(function(resolve, reject){
+    var timeout = 1000;
+    var nTry = 10;
+    var con = null;
+    var listen = null;
+
+    test();
+
+    function test(){
+      nTry--;
+      console.log("Try to connect to " + port + " with " + nTry + " try left");
+      if(!listen){
+
+        con = net.connect({ port:port,host:host});
+
+        con.on("error",function(err){
+          console.log("Failed to connect to port" + port);
+          if( nTry <= 0 ){
+            console.log(err);
+            reject(err);
+          }
+          con.destroy();
+          setTimeout(test,timeout);
+        });
+
+        con.on("connect",function(){
+          console.log("Connected to port" + port);
+          listen = port;
+          con.destroy();
+          resolve(listen);
+        });
+      }
+    }
+  });
+};
