@@ -10,6 +10,7 @@ ui = fluidPage(
 
 server <- function(input,output){
 
+
   observeEvent(input$m,{
     message("message")
   })

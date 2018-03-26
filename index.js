@@ -5,7 +5,11 @@ var path = require('path');
 var httpProxy = require('http-proxy');
 var config = {
   path : path.join(__dirname,"./example"),
-  port : 3333
+  port : 3333,
+  host : "0.0.0.0",
+  timeoutListen : 10e3,
+  timeoutConnect : 100,
+  nTry : 10
 };
 
 module.exports.run = function(options){
@@ -19,16 +23,18 @@ module.exports.run = function(options){
  */
 function app(callback) {
 
-  var r, pathRunApp, port ;
+  var r, pathRunApp, port, listening, listenTimeout ;
 
   getPort()
     .then(function(p){
-
+   
+      return new Promise(function(resolve,reject){
         console.log("Launching R from" +config.path);
         /**
          * Init R process
          */
         port = p;
+        listening = false;
         pathRunApp = path.join(__dirname,'utils/runApp.R');
         r = require('child_process')
           .spawn('Rscript', [pathRunApp, port, config.path ]);
@@ -38,6 +44,8 @@ function app(callback) {
         console.log("Pipe stdout/err");
         r.stdout.pipe(process.stdout);
         r.stderr.pipe(process.stderr);
+
+
 
         /* handle event */
         r.on('close', function(code) {
@@ -50,14 +58,34 @@ function app(callback) {
           r.kill();
         });
 
+        listenTimeout = setTimeout(function(){
+          reject(new Error("Connection timeout"));
+        },config.timeoutListen);
 
-      return port;
+        r.stderr.on('data',function(d){
+          if(listening) return;
+          d = d.toString();
+          /**
+          * Test if shiny app is listening
+          * NOTE: this is a weak way of doing it...
+          * check shiny-server how this is made
+          * 
+          */
+          if(d.indexOf("Listening on http://" + config.host + ":" + port) > -1 ){
+            listening = true;
+            clearTimeout(listenTimeout);
+              console.log("Listen command read, resolve");
+              resolve(port);
+          }
+        });
+
+      });
     }).then(function(port){
         /**
          * Test for connection
          */
         console.log("Wait on port " + port);
-        return waitPort(port,"0.0.0.0");
+        return waitPort(port,config.host);
     })
     .then(function(port){
 
@@ -96,10 +124,15 @@ function app(callback) {
         console.log('Client disconnected');
       });
 
-      callback(proxyServer);
-    }).catch(function(err){
+      //
 
+      console.log("Shiny-server : listening to port " + config.port);
+
+      callback(proxyServer);
+
+    }).catch(function(err){
       console.log(err);
+      process.exit();
     });
 
 }
@@ -121,8 +154,8 @@ var getPort = module.exports.getPort = function(){
 
 var waitPort = module.exports.waitPort = function(port,host){
   return new Promise(function(resolve, reject){
-    var timeout = 1000;
-    var nTry = 10;
+    var timeout = config.timeoutConnect;
+    var nTry = config.nTry;
     var con = null;
     var listen = null;
 
