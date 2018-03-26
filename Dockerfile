@@ -40,6 +40,7 @@ RUN apk add --no-cache nodejs \
     #&& Rscript -e "remove.packages("${r_packages_build}")" \
     && apk del _build_deps
 
+RUN apk add --no-cache ttf-freefont;
 
 VOLUME /mnt/app
 EXPOSE ${shiny_cluster_port}
