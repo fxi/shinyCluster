@@ -71,9 +71,10 @@ yes please !
 
 # Change logs
 
-0.0.6 -> 0.0.7
+0.0.6 -> 0.0.8
  - wait on shiny app to be ready using stderr output (not really clean)
  - setup config: timeoutConnect, timeoutListen, nTry
+ - set option for host
 
 0.0.5 -> 0.0.6
  

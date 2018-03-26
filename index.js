@@ -9,7 +9,8 @@ var config = {
   host : "0.0.0.0",
   timeoutListen : 10e3,
   timeoutConnect : 100,
-  nTry : 10
+  nTry : 10,
+  concurrency :1
 };
 
 module.exports.run = function(options){
@@ -37,7 +38,7 @@ function app(callback) {
         listening = false;
         pathRunApp = path.join(__dirname,'utils/runApp.R');
         r = require('child_process')
-          .spawn('Rscript', [pathRunApp, port, config.path ]);
+          .spawn('Rscript', [pathRunApp, port, config.path, config.host]);
 
 
         /* pipe msgs */
@@ -126,7 +127,7 @@ function app(callback) {
 
       //
 
-      console.log("Shiny-server : listening to port " + config.port);
+      console.log("Shiny-cluster : listening on http://"+ config.host +":" + config.port);
 
       callback(proxyServer);
 
@@ -169,7 +170,7 @@ var waitPort = module.exports.waitPort = function(port,host){
         con = net.connect({ port:port,host:host});
 
         con.on("error",function(err){
-          console.log("Failed to connect to port" + port);
+          console.log("Failed to connect to port: " + port);
           if( nTry <= 0 ){
             console.log(err);
             reject(err);
@@ -179,7 +180,7 @@ var waitPort = module.exports.waitPort = function(port,host){
         });
 
         con.on("connect",function(){
-          console.log("Connected to port" + port);
+          console.log("Connected to port : "+ port);
           listen = port;
           con.destroy();
           resolve(listen);
