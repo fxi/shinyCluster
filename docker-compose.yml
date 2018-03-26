@@ -1,0 +1,11 @@
+version: '3.2'
+services:
+  shiny-cluster:
+    build: .
+    ports:
+      - "3467:3467"
+    volumes:
+      - type: bind
+        source: ./example
+        target: /mnt/app
+
