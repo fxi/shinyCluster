@@ -17,7 +17,6 @@ This is an experimental project. Please send me a feedback if you find this scri
 * [nodejs + npm](https://nodejs.org/download/)
 * [R](http://www.r-project.org/)
 * [R package shiny](https://cran.r-project.org/web/packages/shiny/index.html)
-* [shinyCluster](https://github.com/fxi/shinyCluster)
 
 
 ## Install
